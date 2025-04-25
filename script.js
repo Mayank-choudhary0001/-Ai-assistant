@@ -1,82 +1,64 @@
-let btn=document.querySelector("#btn")
-let content=document.querySelector("#content")
-let voice=document.querySelector("#voice")
-
-function speak(text){
-    let text_speak=new SpeechSynthesisUtterance(text)
-    text_speak.rate=1
-    text_speak.pitch=1
-    text_speak.volume=1
-    // window.speechSynthesis.speak(text_speak)
-    text_speak.lang="en-GB"
-
-}
-
-function wishMe() {
-    let day =new Date()
-    let hours=day.getHours()
-    if(hours>=0 && hours<12){
-        speak("Good Morninng Sir")
-
+// Speech recognition setup
+const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
+  recognition.lang = "en-US";
+  const btn = document.querySelector("#listen-btn");
+  
+  // Attach click event listener to the button
+  btn.addEventListener("click", function () {
+    // Function to convert text to speech
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
     }
-    else if(hours>=12 && hours<16){
-        speak("Good afternoom Sir")
-    }else{
-        speak("Good Evening Sir")
+  
+    // Function to handle recognized commands
+    function handleCommand(command) {
+      if (command.includes("open youtube")) {
+        speak("Opening YouTube...");
+        window.open("https://www.youtube.com", "_blank");
+      } else if (command.includes("open google")) {
+        speak("Opening Google...");
+        window.open("https://www.google.com", "_blank");
+      } else if (command.includes("open facebook")) {
+        speak("Opening Facebook...");
+        window.open("https://www.facebook.com", "_blank");
+      } else if (command.includes("open instagram")) {
+        speak("Opening Instagram...");
+        window.open("https://www.instagram.com", "_blank");
+      } else if (command.includes("open whatsapp")) {
+        speak("Opening WhatsApp...");
+        window.open("https://www.whatsapp.com", "_blank");
+      } else {
+        // Perform a Google search if command not recognized
+        speak("Searching Google for " + command);
+        window.open(
+          `https://www.google.com/search?q=${encodeURIComponent(command)}`,
+          "_blank"
+        );
+      }
     }
-}
-
-let speechRecognition= window.SpeechRecognition || window.webkitSpeechRecognition
-let recognition =new speechRecognition()
-recognition.onresult =(event)=>{
-    let currentIndex =event.resultIndex
-    let transcript =event.results[currentIndex][0].transcript
-    content.innerText= transcript
-    takeCommand(transcript.toloerCase())
-
-}
-btn.addEventListener("click", ()=>{
-    recognition.start()
-    btn.style.display="none"
-    voice.style.display="block"
-
-})
-function takeCommand(message) {
-    btn.style.display="flex"
-    voice.style.display="none"
-    if(message.includes("hello")|| message.includes(hey)){
-        speak("hello sir ,what can i help you")
-    }
-    else if(message.includes("who are you")){
-        speak(" i am mr.cool a virtual assistant , created by CS team")
-    }else if(message.includes("open google ")){
-        speak("opening google...")
-        window.open("https://google.com/","_blank")
-
-    }else if(message.includes("open facebook ")){
-        speak("opeaninge facebook...")
-        window.open("https://facebook.com/","_blank")
-
-    }else if(message.includes("openinstagram ")){
-        speak("opeaning instagram...")
-        window.open("https://instagram.com/","_blank")
-
-    }else if(message.includes("open calculator")){
-        speak("opeaning calculator...")
-        window.open("https://calculator.com/","_blank")
-
-    }else if(message.includes("time")){
-        let time=new Date().toLocaleString(undefined,{hours:"numeric",minute:"numeric"})
-        speak(time)
-    }else if(message.includes("date")){
-        let date=new Date().toLocaleString(undefined,{day:"numeric",month:"short"})
-        speak(date)
-    }else{
-        let finalTex="this is what i found on regarding it" + message.replace("mr.cool","")|| message.
-        replace("mr.cool","")
-        speak(finalTexT)
-        window.open('https://www.google.com/search?q=${message}',"_blank")
-    }
-
-    
-}
+  
+    // Greet the user and then start listening
+    speak("Hello, how can I help you?");
+  
+    // Delay to ensure greeting completes before starting recognition
+    setTimeout(() => {
+      btn.innerHTML = "Listening...👂";
+      btn.classList.add("listening");
+      recognition.start();
+    }, 2500);
+  
+    // When a result is received
+    recognition.onresult = (event) => {
+      console.log(event);
+      const command = event.results[0][0].transcript.toLowerCase();
+      handleCommand(command);
+    };
+  
+    // When recognition ends
+    recognition.onend = () => {
+      btn.innerHTML = "Start Listening";
+      btn.classList.remove("listening");
+    };
+  });
