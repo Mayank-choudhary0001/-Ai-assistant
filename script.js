@@ -14,7 +14,13 @@ const recognition = new (window.SpeechRecognition ||
   
     // Function to handle recognized commands
     function handleCommand(command) {
-      if (command.includes("open youtube")) {
+      if(message.includes("hello")|| message.includes(hey)){
+        speak("hello sir ,what can i help you")
+    }
+    else if(message.includes("who are you")){
+        speak(" i am mr.cool a virtual assistant , created by CS team")
+    }
+      else if (command.includes("open youtube")) {
         speak("Opening YouTube...");
         window.open("https://www.youtube.com", "_blank");
       } else if (command.includes("open google")) {
@@ -26,9 +32,7 @@ const recognition = new (window.SpeechRecognition ||
       } else if (command.includes("open instagram")) {
         speak("Opening Instagram...");
         window.open("https://www.instagram.com", "_blank");
-      } else if (command.includes("open whatsapp")) {
-        speak("Opening WhatsApp...");
-        window.open("https://www.whatsapp.com", "_blank");
+      
       } else {
         // Perform a Google search if command not recognized
         speak("Searching Google for " + command);
