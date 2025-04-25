@@ -1,26 +1,19 @@
-// Speech recognition setup
-const recognition = new (window.SpeechRecognition ||
-    window.webkitSpeechRecognition)();
-  recognition.lang = "en-US";
+//  Speech recognition setup
+ const recognition = new (window.SpeechRecognition ||
+     window.webkitSpeechRecognition)();
+   recognition.lang = "en-US";
   const btn = document.querySelector("#listen-btn");
   
-  // Attach click event listener to the button
-  btn.addEventListener("click", function () {
-    // Function to convert text to speech
-    function speak(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      window.speechSynthesis.speak(utterance);
-    }
-  
-    // Function to handle recognized commands
-    function handleCommand(command) {
-      if(message.includes("hello")|| message.includes(hey)){
-        speak("hello sir ,what can i help you")
-    }
-    else if(message.includes("who are you")){
-        speak(" i am mr.cool a virtual assistant , created by CS team")
-    }
-      else if (command.includes("open youtube")) {
+    // Attach click event listener to the button
+   btn.addEventListener("click", function () {
+    //   Function to convert text to speech
+     function speak(text) {
+       const utterance = new SpeechSynthesisUtterance(text);
+       window.speechSynthesis.speak(utterance);
+     }
+        // Function to handle recognized commands
+     function handleCommand(command) {
+      if (command.includes("open youtube")) {
         speak("Opening YouTube...");
         window.open("https://www.youtube.com", "_blank");
       } else if (command.includes("open google")) {
@@ -44,7 +37,7 @@ const recognition = new (window.SpeechRecognition ||
     }
   
     // Greet the user and then start listening
-    speak("Hello, how can I help you?");
+    speak("Hello sir, what can I help you?");
   
     // Delay to ensure greeting completes before starting recognition
     setTimeout(() => {
